@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import HabitDataService from "../services/habit.service";
 
 export default class HabitsList extends Component {
@@ -7,6 +8,7 @@ export default class HabitsList extends Component {
 
     this.state = {
       habits: [],
+      currentItem: null,
     };
   }
 
@@ -17,7 +19,6 @@ export default class HabitsList extends Component {
   loadHabits() {
     HabitDataService.getAll()
       .then((res) => {
-        console.log(res.data.data);
         this.setState({
           habits: res.data.data,
         });
@@ -28,7 +29,7 @@ export default class HabitsList extends Component {
   }
 
   render() {
-    var habits = this.state.habits;
+    const { habits, currentItem } = this.state;
 
     return (
       <div className="list row">
@@ -41,14 +42,61 @@ export default class HabitsList extends Component {
           <ul className="list-group">
             {habits &&
               habits.map((item, index) => (
-                <li className="list-group-item" key={index}>
+                <li
+                  className="list-group-item"
+                  key={index}
+                  onClick={() => this.showItem(item, index)}
+                >
                   {item.name}
                 </li>
               ))}
           </ul>
         </div>
-        <div className="col-md-6">Current habit</div>
+        <div className="col-md-6">
+          {currentItem ? (
+            <div>
+              <h4>Привычка</h4>
+              <div>
+                <label>
+                  <strong>Описание:</strong>
+                </label>{" "}
+                {currentItem.name}
+              </div>
+              <div>
+                <label>
+                  <strong>Статус:</strong>
+                </label>{" "}
+                {currentItem.is_active ? "Активный" : "Неактивный"}
+              </div>
+              <div>
+                <label>
+                  <strong>Создан:</strong>
+                </label>{" "}
+                {currentItem.created_at}
+              </div>
+
+              <Link
+                to={"/habits/" + currentItem.id}
+                className="badge badge-warning"
+              >
+                Edit
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <br />
+              <p>Please click on a Tutorial...</p>
+            </div>
+          )}
+        </div>
       </div>
     );
+  }
+
+  showItem(item, index) {
+    console.log(item);
+    this.setState({
+      currentItem: item,
+    });
   }
 }
