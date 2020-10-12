@@ -1,14 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import HabitsList from "./components/habits-list.component";
 
 ReactDOM.render(
   <BrowserRouter>
     <App />
+    <div className="container mt-3">
+      <Switch>
+        <Route exact path="/habits" component={HabitsList} />
+      </Switch>
+    </div>
   </BrowserRouter>,
   document.getElementById("root")
 );
