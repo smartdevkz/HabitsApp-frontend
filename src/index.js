@@ -6,6 +6,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import HabitsList from "./components/habits-list.component";
+import Journal from "./components/journal.component";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -13,6 +14,7 @@ ReactDOM.render(
     <div className="container mt-3">
       <Switch>
         <Route exact path="/habits" component={HabitsList} />
+        <Route exact path="/journal" component={Journal} />
       </Switch>
     </div>
   </BrowserRouter>,
