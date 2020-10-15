@@ -6,9 +6,12 @@ export default class HabitsList extends Component {
   constructor(props) {
     super(props);
 
+    this.onChangeName = this.onChangeName.bind(this);
+
     this.state = {
       habits: [],
       currentItem: null,
+      newItem: null,
     };
   }
 
@@ -30,11 +33,13 @@ export default class HabitsList extends Component {
 
   render() {
     const { habits, currentItem } = this.state;
-
+    const newItem = this.state.newItem;
     return (
       <div className="list row">
         <div className="col-md-8">
-          <div className="input-group mb-3"></div>
+          <div className="input-group mb-3">
+            <Link onClick={() => this.showNewItemForm()}>Добавить</Link>
+          </div>
         </div>
         <div className="col-md-6">
           <h4>Список привычек</h4>
@@ -76,21 +81,77 @@ export default class HabitsList extends Component {
               </div>
 
               <Link
-                to={"/habits/" + currentItem.id}
+                onClick={() => this.showEditItemForm(currentItem)}
                 className="badge badge-warning"
               >
-                Edit
+                Редактировать
+              </Link>
+
+              <Link
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Вы действительно хотите удалить эту запись?"
+                    )
+                  ) {
+                    this.deleteItem(currentItem);
+                  }
+                }}
+                className="badge badge-default"
+              >
+                Удалить
               </Link>
             </div>
           ) : (
+            <span></span>
+          )}
+          {newItem ? (
             <div>
-              <br />
-              <p>Please click on a Tutorial...</p>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  required
+                  value={this.state.newItem.name}
+                  onChange={this.onChangeName}
+                  name="name"
+                />
+              </div>
+              <button onClick={() => this.save()} className="btn btn-success">
+                Submit
+              </button>
             </div>
+          ) : (
+            <span></span>
           )}
         </div>
       </div>
     );
+  }
+
+  onChangeName(e) {
+    const name = e.target.value;
+
+    this.setState({
+      newItem: { name: name },
+    });
+  }
+
+  save() {
+    const newItem = this.state.newItem;
+
+    HabitDataService.create(newItem)
+      .then((res) => {
+        this.loadHabits();
+        this.setState({
+          newItem: null,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   showItem(item, index) {
@@ -98,5 +159,37 @@ export default class HabitsList extends Component {
     this.setState({
       currentItem: item,
     });
+  }
+
+  showNewItemForm() {
+    this.setState({
+      newItem: {
+        name: "empty",
+      },
+      currentItem: null,
+    });
+  }
+
+  showEditItemForm(item) {
+    this.setState({
+      newItem: {
+        id: item.id,
+        name: item.name,
+      },
+      currentItem: null,
+    });
+  }
+
+  deleteItem(item) {
+    HabitDataService.delete(item.id)
+      .then((res) => {
+        this.loadHabits();
+        this.setState({
+          newItem: null,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }

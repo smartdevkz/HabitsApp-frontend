@@ -19,7 +19,6 @@ export default class Journal extends Component {
     var daysCount = new Date(this.getYear(), this.getMonth() + 1, 0).getDate();
     return (
       <div>
-        <p>{"dayCount:" + daysCount}</p>
         <table border="1">
           <thead>
             <tr>
