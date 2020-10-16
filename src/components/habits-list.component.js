@@ -132,11 +132,10 @@ export default class HabitsList extends Component {
   }
 
   onChangeName(e) {
-    const name = e.target.value;
+    const oldItem = this.state.newItem;
+    oldItem.name = e.target.value;
 
-    this.setState({
-      newItem: { name: name },
-    });
+    this.setState(oldItem);
   }
 
   save() {
@@ -144,6 +143,7 @@ export default class HabitsList extends Component {
 
     HabitDataService.create(newItem)
       .then((res) => {
+        console.log(res);
         this.loadHabits();
         this.setState({
           newItem: null,
@@ -164,7 +164,7 @@ export default class HabitsList extends Component {
   showNewItemForm() {
     this.setState({
       newItem: {
-        name: "empty",
+        name: "",
       },
       currentItem: null,
     });
@@ -183,6 +183,7 @@ export default class HabitsList extends Component {
   deleteItem(item) {
     HabitDataService.delete(item.id)
       .then((res) => {
+        console.log(res);
         this.loadHabits();
         this.setState({
           newItem: null,

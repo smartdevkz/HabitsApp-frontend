@@ -1,17 +1,13 @@
 import Axios from "axios";
-import Api from "../http-common";
-
-const API_URL="http://localhost:8080/"; 
+import http from "../http-common";
 
 class JournalDataService {
-
   getAll(year, month) {
-    console.log("journal/?year=" + year + "&month=" + month);
-    return Api.get("journal/?year=" + year + "&month=" + month);
+    return http.get("journal/?year=" + year + "&month=" + month);
   }
 
   save(journal) {
-    return Axios.post(API_URL+"journal/", JSON.stringify(journal));
+    return http.post("journal/", JSON.stringify(journal));
   }
 }
 
