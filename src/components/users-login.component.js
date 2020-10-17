@@ -3,6 +3,8 @@ import UserService from "../services/user.service";
 import {setCookie} from '../Utils';
 
 export default class UserLogin extends Component {
+  
+
   constructor(props) {
     super(props);
 
@@ -77,6 +79,7 @@ export default class UserLogin extends Component {
         UserService.getCurrentUser()
           .then((res2) => {
             localStorage.setItem("currentUser", JSON.stringify(res2.data.data));
+            window.location.href='/';
           })
           .then((err2) => {
               console.log(err2);

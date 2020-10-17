@@ -48,7 +48,7 @@ function App() {
               <Link to={"#"} className="nav-link">
                 {user.email}
               </Link>
-              <Link onClick={() => quit()} to={"/"} className="nav-link">
+              <Link onClick={() => logout()} to={"/"} className="nav-link">
                 Выйти
               </Link>
             </li>
@@ -59,9 +59,10 @@ function App() {
   );
 }
 
-function quit() {
+function logout() {
   eraseCookie("token");
   localStorage.removeItem("currentUser");
+  window.location.href='/';
 }
 
 export default App;
