@@ -61,13 +61,13 @@ export default class Journal extends Component {
   }
 
   fillHabitJournal(item, daysCount) {
-    var arr = new Array();
+    var arr = [];
 
     var k = 0;
     for (var i = 0; i < daysCount; i++) {
       if (item.journals.length > k) {
         var d = new Date(item.journals[k].date).getDate();
-        if (d == i + 1) {
+        if (d === i + 1) {
           console.log("d=" + d + " i=" + (i + 1));
           console.log(item.journals[k]);
           arr.push(item.journals[k]);

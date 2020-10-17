@@ -1,4 +1,3 @@
-import Axios from "axios";
 import http from "../http-common";
 
 class JournalDataService {

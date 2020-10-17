@@ -8,7 +8,7 @@ function App() {
     <nav className="navbar navbar-expand navbar-dark bg-dark">
       <div className="navbar-nav mr-auto">
         <nav className="navbar navbar-light">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand" href="/">
             HabitsApp
           </a>
         </nav>
@@ -22,6 +22,20 @@ function App() {
             Журнал
           </Link>
         </li>
+      </div>
+      <div className="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <Link to={"/user/login"} className="nav-link">
+              Логин
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={"/user/register"} className="nav-link">
+              Регистрация
+            </Link>
+          </li>
+        </ul>
       </div>
     </nav>
   );

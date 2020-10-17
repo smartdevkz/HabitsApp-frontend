@@ -7,6 +7,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import HabitsList from "./components/habits-list.component";
 import Journal from "./components/journal.component";
+import UserLogin from "./components/users-login.component";
+import UserRegistration from "./components/users-registration.component";
 
 ReactDOM.render(
   <BrowserRouter>
@@ -15,6 +17,8 @@ ReactDOM.render(
       <Switch>
         <Route exact path="/habits" component={HabitsList} />
         <Route exact path="/journal" component={Journal} />
+        <Route exact path="/user/login" component={UserLogin} />
+        <Route exact path="/user/register" component={UserRegistration} />
       </Switch>
     </div>
   </BrowserRouter>,
