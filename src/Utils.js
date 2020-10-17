@@ -22,6 +22,6 @@ export function getCookie(cname) {
   return "";
 }
 
-function eraseCookie(name) {
+export function eraseCookie(name) {
   document.cookie = name + "=; Max-Age=-99999999;";
 }

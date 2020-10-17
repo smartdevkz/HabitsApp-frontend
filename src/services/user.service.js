@@ -1,4 +1,4 @@
-import http, { request } from "../http-common";
+import http from "../http-common";
 import { getCookie } from "../Utils";
 
 class UserDataService {
