@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http, { request } from "../http-common";
 import { getCookie } from "../Utils";
 
 class UserDataService {
@@ -13,11 +13,9 @@ class UserDataService {
 
   getCurrentUser() {
     let token = getCookie("token");
-    //TODO нужно пересоздать http c token
-    delete require.cache[require.resolve('../http-common')];
-    require('../http-common');
-    
-    return http.get("user/current");
+    return http.get("user/current", {
+      headers: { Authorization: "Bearer " + token },
+    });
   }
 }
 

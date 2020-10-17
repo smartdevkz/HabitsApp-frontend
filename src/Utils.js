@@ -1,4 +1,5 @@
 export function setCookie(cname, cvalue, exdays) {
+  eraseCookie(cname);
   var d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   var expires = "expires=" + d.toUTCString();
@@ -19,4 +20,8 @@ export function getCookie(cname) {
     }
   }
   return "";
+}
+
+function eraseCookie(name) {
+  document.cookie = name + "=; Max-Age=-99999999;";
 }

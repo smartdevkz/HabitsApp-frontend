@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import UserService from "../services/user.service";
+import {setCookie} from '../Utils';
 
 export default class UserLogin extends Component {
   constructor(props) {
@@ -67,32 +68,23 @@ export default class UserLogin extends Component {
 
   login() {
     const user = this.state;
-    console.log(user);
+
     UserService.login(user)
       .then((res) => {
-        console.log(res.data.data);
-        this.eraseCookie("token");
-        this.setCookie("token", res.data.data);
+        
+        setCookie("token", res.data.data);
+        
         UserService.getCurrentUser()
           .then((res2) => {
-            console.log(res2.data);
-            localStorage.setItem("currentUser", res2.data.data);
+            localStorage.setItem("currentUser", JSON.stringify(res2.data.data));
           })
-          .then((err2) => {});
+          .then((err2) => {
+              console.log(err2);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-  }
-
-  eraseCookie(name) {
-    document.cookie = name + "=; Max-Age=-99999999;";
-  }
 }
