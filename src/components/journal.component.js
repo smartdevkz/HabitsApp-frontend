@@ -17,6 +17,8 @@ export default class Journal extends Component {
   render() {
     const habits = this.state.habits;
     var daysCount = new Date(this.getYear(), this.getMonth() + 1, 0).getDate();
+    var today = new Date().getDate();
+    console.log(today);
     return (
       <div>
         <table border="1">
@@ -40,7 +42,9 @@ export default class Journal extends Component {
                     {item.journals.map((journal, j) => {
                       return (
                         <td
-                          className="cell"
+                          className={
+                            "cell " + (today > j+1 ? "last_day" :(today==j+1? "current_day":""))
+                          }
                           onClick={(e, id) => this.setPlus(e, item, j + 1)}
                         >
                           {this.getMark(journal)}
@@ -112,7 +116,6 @@ export default class Journal extends Component {
     JournalDataService.save(journal)
       .then((res) => {
         console.log(res.data.data);
-        //this.setState({ habits: res.data.data });
       })
       .catch((e) => {
         console.log(e);
