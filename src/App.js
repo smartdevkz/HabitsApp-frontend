@@ -5,9 +5,10 @@ import "./App.css";
 import { eraseCookie } from "./Utils";
 
 function App() {
-  let user = localStorage.getItem("currentUser")!=null
-    ? JSON.parse(localStorage.getItem("currentUser"))
-    : null;
+  let user =
+    localStorage.getItem("currentUser") != null
+      ? JSON.parse(localStorage.getItem("currentUser"))
+      : null;
   return (
     <nav className="navbar navbar-expand navbar-dark bg-dark">
       <div className="navbar-nav mr-auto">
@@ -48,6 +49,8 @@ function App() {
               <Link to={"#"} className="nav-link">
                 {user.email}
               </Link>
+            </li>
+            <li className="nav-item">
               <Link onClick={() => logout()} to={"/"} className="nav-link">
                 Выйти
               </Link>
@@ -62,7 +65,7 @@ function App() {
 function logout() {
   eraseCookie("token");
   localStorage.removeItem("currentUser");
-  window.location.href='/';
+  window.location.href = "/";
 }
 
 export default App;
