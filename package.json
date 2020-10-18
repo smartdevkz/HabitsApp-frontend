@@ -2,10 +2,6 @@
   "name": "habits-app",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "12.16.0",
-    "npm": "6.13.7"
-  },
   "proxy": "https://habits-api.smartdev.kz",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
