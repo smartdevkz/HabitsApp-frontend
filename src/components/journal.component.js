@@ -18,7 +18,7 @@ export default class Journal extends Component {
     const habits = this.state.habits;
     var daysCount = new Date(this.getYear(), this.getMonth() + 1, 0).getDate();
     var today = new Date().getDate();
-    console.log(today);
+
     return (
       <div>
         <table border="1">
@@ -43,9 +43,14 @@ export default class Journal extends Component {
                       return (
                         <td
                           className={
-                            "cell " + (today > j+1 ? "last_day" :(today==j+1? "current_day":""))
+                            "cell " +
+                            (today > j + 1
+                              ? "last_day"
+                              : today == j + 1
+                              ? "current_day"
+                              : "")
                           }
-                          onClick={(e, id) => this.setPlus(e, item, j + 1)}
+                          onClick={(e, id) => this.togglePlus(e, item, j + 1)}
                         >
                           {this.getMark(journal)}
                         </td>
@@ -72,8 +77,6 @@ export default class Journal extends Component {
       if (item.journals.length > k) {
         var d = new Date(item.journals[k].date).getDate();
         if (d === i + 1) {
-          console.log("d=" + d + " i=" + (i + 1));
-          console.log(item.journals[k]);
           arr.push(item.journals[k]);
           k++;
         } else {
@@ -98,22 +101,33 @@ export default class Journal extends Component {
       });
   }
 
-  setPlus(e, item, day) {
-    console.log(day);
-    e.target.innerHTML = "+";
-    this.markCell(item, day);
+  togglePlus(e, item, day) {
+    if (e.target.innerHTML === "-") {
+      e.target.innerHTML = "+";
+      this.addMark(item, day);
+    } else {
+      e.target.innerHTML = "-";
+      this.removeMark(item, day);
+    }
   }
 
-  markCell(item, day) {
-    console.log(item);
-    console.log(day);
-
+  addMark(item, day) {
     var journal = {
       habit_id: item.id,
       date: new Date(this.getYear(), this.getMonth(), ++day),
     };
-    console.log(journal);
+
     JournalDataService.save(journal)
+      .then((res) => {
+        console.log(res.data.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }
+
+  removeMark(item, day) {
+    JournalDataService.delete(item.journals[day - 1].id)
       .then((res) => {
         console.log(res.data.data);
       })

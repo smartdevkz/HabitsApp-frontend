@@ -19,6 +19,10 @@ class JournalDataService {
   save(journal) {
     return http.post("journal/", JSON.stringify(journal), this.getAuthHeader());
   }
+
+  delete(id){
+    return http.delete("journal/"+id, this.getAuthHeader());
+  }
 }
 
 export default new JournalDataService();
