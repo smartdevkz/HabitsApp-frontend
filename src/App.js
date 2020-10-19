@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { eraseCookie } from "./Utils";
+import http from "./http-common";
 
 function App() {
   let user =
@@ -25,6 +26,11 @@ function App() {
         <li className="nav-item">
           <Link to={"/journal"} className="nav-link">
             Журнал
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link onClick={() => btnClick()} className="nav-link">
+            Кнопка
           </Link>
         </li>
       </div>
@@ -66,6 +72,15 @@ function logout() {
   eraseCookie("token");
   localStorage.removeItem("currentUser");
   window.location.href = "/";
+}
+
+function btnClick() {
+  console.log("btnClick()");
+  http.post("http://habits.freecluster.eu/generateToken",).then(res=>{
+    console.log(res);
+  }).catch(err=>{
+    console.log(err);
+  });
 }
 
 export default App;
