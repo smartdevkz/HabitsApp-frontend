@@ -76,7 +76,7 @@ function logout() {
 
 function btnClick() {
   console.log("btnClick()");
-  http.post("http://habits.freecluster.eu/generateToken",).then(res=>{
+  http.post("https://habits-api.smartdev.kz/generateToken",).then(res=>{
     console.log(res);
   }).catch(err=>{
     console.log(err);
