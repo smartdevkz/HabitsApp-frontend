@@ -108,7 +108,7 @@ export default class HabitsList extends Component {
           {newItem ? (
             <div>
               <div className="form-group">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Описание</label>
                 <input
                   type="text"
                   className="form-control"
@@ -120,7 +120,7 @@ export default class HabitsList extends Component {
                 />
               </div>
               <button onClick={() => this.save()} className="btn btn-success">
-                Submit
+                Сохранить
               </button>
             </div>
           ) : (
