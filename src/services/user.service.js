@@ -2,6 +2,12 @@ import http from "../http-common";
 import { getCookie } from "../Utils";
 
 class UserDataService {
+  getAuthHeader() {
+    return {
+      headers: { Authorization: "Bearer " + getCookie("token") },
+    };
+  }
+
   register(user) {
     delete user.password_retype;
     return http.post("user", JSON.stringify(user));
@@ -12,10 +18,7 @@ class UserDataService {
   }
 
   getCurrentUser() {
-    let token = getCookie("token");
-    return http.get("user/current", {
-      headers: { Authorization: "Bearer " + token },
-    });
+    return http.get("user/current", this.getAuthHeader());
   }
 }
 

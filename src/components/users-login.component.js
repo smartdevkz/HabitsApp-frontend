@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import UserService from "../services/user.service";
-import {setCookie} from '../Utils';
+import { setCookie, getCookie } from "../Utils";
 
 export default class UserLogin extends Component {
-  
-
   constructor(props) {
     super(props);
 
     this.state = {
-      email: "",
-      password: "",
+      email: "demo",
+      password: "demo",
     };
 
     this.onChangeEmail = this.onChangeEmail.bind(this);
@@ -73,21 +71,24 @@ export default class UserLogin extends Component {
 
     UserService.login(user)
       .then((res) => {
-        
         setCookie("token", res.data.data);
-        
+
         UserService.getCurrentUser()
           .then((res2) => {
-            localStorage.setItem("currentUser", JSON.stringify(res2.data.data));
-            window.location.href='/';
+            if (res2.data.data)
+              localStorage.setItem(
+                "currentUser",
+                JSON.stringify(res2.data.data)
+              );
+
+            window.location.href = "/";
           })
           .then((err2) => {
-              console.log(err2);
+            console.log(err2);
           });
       })
       .catch((err) => {
         console.log(err);
       });
   }
-
 }
