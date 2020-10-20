@@ -75,13 +75,13 @@ export default class UserLogin extends Component {
 
         UserService.getCurrentUser()
           .then((res2) => {
-            if (res2.data.data)
+            if (res2.data.data) {
               localStorage.setItem(
                 "currentUser",
                 JSON.stringify(res2.data.data)
               );
-
-            window.location.href = "/";
+              window.location.href = "/";
+            }
           })
           .then((err2) => {
             console.log(err2);

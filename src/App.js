@@ -2,13 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import { eraseCookie } from "./Utils";
+import UserService from "./services/user.service";
 
 function App() {
-  let user =
-    localStorage.getItem("currentUser") != null
-      ? JSON.parse(localStorage.getItem("currentUser"))
-      : null;
+  UserService.validateUserData();
+  let user = UserService.getUserFromLocalStorage();
+
   return (
     <nav className="navbar navbar-expand navbar-dark bg-dark">
       <div className="navbar-nav mr-auto">
@@ -51,7 +50,14 @@ function App() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link onClick={() => logout()} to={"/"} className="nav-link">
+              <Link
+                onClick={() => {
+                  UserService.logout();
+                  window.location.href = "/";
+                }}
+                to={"/"}
+                className="nav-link"
+              >
                 Выйти
               </Link>
             </li>
@@ -60,12 +66,6 @@ function App() {
       </div>
     </nav>
   );
-}
-
-function logout() {
-  eraseCookie("token");
-  localStorage.removeItem("currentUser");
-  window.location.href = "/";
 }
 
 export default App;
