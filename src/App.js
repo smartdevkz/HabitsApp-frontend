@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -6,7 +6,14 @@ import UserService from "./services/user.service";
 
 function App() {
   UserService.validateUserData();
-  let user = UserService.getUserFromLocalStorage();
+
+  const [user, setUser] = useState(0);
+
+  useEffect(() => {
+    console.log("app js userEffect");
+    let user = UserService.getUserFromLocalStorage();
+    setUser(user);
+  }, []);
 
   return (
     <nav className="navbar navbar-expand navbar-dark bg-dark">
