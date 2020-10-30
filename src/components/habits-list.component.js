@@ -14,15 +14,13 @@ export default function HabitsList() {
       });
   }
 
-  const [serverCalled, setServerCalled] = useState(0);
-
   const [habits, setHabits] = useState([]);
 
   const [currentItem, setCurrentItem] = useState(null);
 
   const [newItem, setNewItem] = useState(null);
 
-  useEffect(() => loadHabits(), [serverCalled]);
+  useEffect(() => loadHabits(), []);
 
     return (
       <div className="list row">
@@ -86,7 +84,7 @@ export default function HabitsList() {
                 onClick={() => {
                   let confirmDelete = window.confirm("Вы действительно хотите удалить эту запись?")
                   if(confirmDelete) {
-                    deleteItem(currentItem, ()=> {setServerCalled(serverCalled + 1)})
+                    deleteItem(currentItem, loadHabits)
                     setCurrentItem(null)
                   }
                 }}
@@ -113,7 +111,7 @@ export default function HabitsList() {
                 />
               </div>
               <button 
-               onClick={() => {save(newItem, ()=> {setServerCalled(serverCalled + 1)})
+               onClick={() => {save(newItem, loadHabits)
                                setNewItem(null)}}
                className="btn btn-success">
                 Сохранить
