@@ -1,11 +1,10 @@
 import http from "../http-common";
-import { getCookie } from "../Utils";
 
 class JournalDataService {
   
   getAuthHeader() {
     return {
-      headers: { Authorization: "Bearer " + getCookie("token") },
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     };
   }
 

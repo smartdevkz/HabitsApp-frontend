@@ -10,19 +10,22 @@ import Journal from "./components/journal.component";
 import UserLogin from "./components/users-login.component";
 import UserRegistration from "./components/users-registration.component";
 import About from "./components/about.component";
+import { AuthProvider } from "./context";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
-    <div className="container mt-3">
-      <Switch>
-      <Route exact path="/" component={About} />
-        <Route exact path="/habits" component={HabitsList} />
-        <Route exact path="/journal" component={Journal} />
-        <Route exact path="/user/login" component={UserLogin} />
-        <Route exact path="/user/register" component={UserRegistration} />
-      </Switch>
-    </div>
+    <AuthProvider>
+      <App />
+      <div className="container mt-3">
+        <Switch>
+          <Route exact path="/" component={About} />
+          <Route exact path="/habits" component={HabitsList} />
+          <Route exact path="/journal" component={Journal} />
+          <Route exact path="/user/login" component={UserLogin} />
+          <Route exact path="/user/register" component={UserRegistration} />
+        </Switch>
+      </div>
+    </AuthProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

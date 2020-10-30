@@ -1,94 +1,79 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useAuthDispatch, useAuthState } from "../context";
 import UserService from "../services/user.service";
-import { setCookie, getCookie } from "../Utils";
 
-export default class UserLogin extends Component {
-  constructor(props) {
-    super(props);
+function UserLogin(props) {
+  const [email, setEmail] = useState("demo");
+  const [password, setPassword] = useState("demo");
 
-    this.state = {
-      email: "demo",
-      password: "demo",
-    };
+  const { loading, errorMessage } = useAuthState();
+  const dispatch = useAuthDispatch();
 
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-  }
-
-  render() {
-    return (
-      <div className="col-md-3">
-        <h3>Вход</h3>
-        <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            required
-            name="email"
-            value={this.state.email}
-            onChange={this.onChangeEmail}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Пароль</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            required
-            name="password"
-            value={this.state.password}
-            onChange={this.onChangePassword}
-          />
-        </div>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={() => this.login()}
-        >
-          Войти
-        </button>
+  return (
+    <div className="col-md-3">
+      <h3>Вход</h3>
+      {errorMessage ? <p>Error !!!!</p> : null}
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          className="form-control"
+          id="email"
+          required
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
-    );
-  }
-
-  onChangeEmail(e) {
-    const oldUser = this.state;
-    oldUser.email = e.target.value;
-    this.setState(oldUser);
-  }
-
-  onChangePassword(e) {
-    const oldUser = this.state;
-    oldUser.password = e.target.value;
-    this.setState(oldUser);
-  }
-
-  login() {
-    const user = this.state;
-
-    UserService.login(user)
-      .then((res) => {
-        setCookie("token", res.data.data);
-
-        UserService.getCurrentUser()
-          .then((res2) => {
-            if (res2.data.data) {
-              localStorage.setItem(
-                "currentUser",
-                JSON.stringify(res2.data.data)
-              );
-              window.location.href = "/";
-            }
-          })
-          .then((err2) => {
-            console.log(err2);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+      <div className="form-group">
+        <label htmlFor="password">Пароль</label>
+        <input
+          type="password"
+          className="form-control"
+          id="password"
+          required
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button
+        type="submit"
+        className="btn btn-primary"
+        disabled={loading}
+        onClick={() => {
+          dispatch({ type: "LOGIN_REQUEST" });
+          UserService.login({ email: email, password: password })
+            .then((res) => {
+              localStorage.setItem("token", res.data.data);
+              console.log(res.data.data);
+              UserService.getCurrentUser()
+                .then((res2) => {
+                  localStorage.setItem('currentUser',JSON.stringify(res2.data.data));
+                  console.log(res2.data.data);
+                  dispatch({
+                    type: "LOGIN_SUCCESS",
+                    payload: { token: res.data.data, user: res2.data.data },
+                  });
+                  props.history.push('/');
+                })
+                .catch((err2) => {
+                  console.log(err2);
+                  dispatch({ type: "LOGIN_ERROR" });
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              dispatch({ type: "LOGIN_ERROR" });
+            });
+        }}
+      >
+        Войти
+      </button>
+    </div>
+  );
 }
+
+function login() {}
+
+export default UserLogin;

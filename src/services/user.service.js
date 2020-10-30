@@ -1,5 +1,4 @@
 import http from "../http-common";
-import { getCookie, eraseCookie } from "../Utils";
 
 class UserDataService {
   getUserFromLocalStorage() {
@@ -9,12 +8,12 @@ class UserDataService {
   }
 
   logout() {
-    eraseCookie("token");
+    localStorage.removeItem('token');
     localStorage.removeItem("currentUser");
   }
 
   validateUserData() {
-    var token = getCookie("token");
+    var token = localStorage.getItem('token');
     if (!token) this.logout();
     var user = localStorage.getItem("currentUser");
     if (!user) {
@@ -34,7 +33,7 @@ class UserDataService {
 
   getAuthHeader() {
     return {
-      headers: { Authorization: "Bearer " + getCookie("token") },
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     };
   }
 
