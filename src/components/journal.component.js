@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import JournalDataService from "../services/journal.service";
+import { JournalCell } from "../components/journal-cell.component";
 
 export default class Journal extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       habits: [],
     };
@@ -16,8 +16,9 @@ export default class Journal extends Component {
 
   render() {
     const habits = this.state.habits;
-    var daysCount = new Date(this.getYear(), this.getMonth() + 1, 0).getDate();
-    var today = new Date().getDate();
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+    var daysCount = new Date(year, month, 0).getDate();
 
     return (
       <div>
@@ -39,20 +40,14 @@ export default class Journal extends Component {
                   <tr key={i}>
                     <td>{i + 1}.</td>
                     <td>{item.name}</td>
-                    {item.journals.map((journal, j) => {
+                    {item.journals.map((record, j) => {
                       return (
-                        <td
-                          className={
-                            "cell " +
-                            (today > j + 1
-                              ? "last_day"
-                              : today == j + 1
-                              ? "current_day"
-                              : "")
-                          }
-                          onClick={(e, id) => this.togglePlus(e, item, j + 1)}
-                        >
-                          {this.getMark(journal)}
+                        <td>
+                          <JournalCell
+                            day={j}
+                            data={record}
+                            habitId={item.id}
+                          />
                         </td>
                       );
                     })}
@@ -91,7 +86,10 @@ export default class Journal extends Component {
   }
 
   loadHabits() {
-    JournalDataService.getAll(this.getYear(), this.getMonth() + 1)
+    const year = new Date().getFullYear();
+    const month = new Date().getMonth() + 1;
+
+    JournalDataService.getAll(year, month)
       .then((res) => {
         console.log(res.data.data);
         this.setState({ habits: res.data.data });
@@ -99,47 +97,5 @@ export default class Journal extends Component {
       .catch((e) => {
         console.log(e);
       });
-  }
-
-  togglePlus(e, item, day) {
-    if (e.target.innerHTML === "-") {
-      e.target.innerHTML = "+";
-      this.addMark(item, day);
-    } else {
-      e.target.innerHTML = "-";
-      this.removeMark(item, day);
-    }
-  }
-
-  addMark(item, day) {
-    var journal = {
-      habit_id: item.id,
-      date: new Date(this.getYear(), this.getMonth(), ++day),
-    };
-
-    JournalDataService.save(journal)
-      .then((res) => {
-        console.log(res.data.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  removeMark(item, day) {
-    JournalDataService.delete(item.journals[day - 1].id)
-      .then((res) => {
-        console.log(res.data.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  getMonth() {
-    return new Date().getMonth();
-  }
-  getYear() {
-    return new Date().getFullYear();
   }
 }
