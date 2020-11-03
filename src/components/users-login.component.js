@@ -74,6 +74,4 @@ function UserLogin(props) {
   );
 }
 
-function login() {}
-
 export default UserLogin;

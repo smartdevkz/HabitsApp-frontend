@@ -52,6 +52,7 @@ export const Header = () => {
                   localStorage.removeItem("token");
                   localStorage.removeItem("currentUser");
                   dispatch({ type: "LOGOUT" });
+                  window.location.href='/';
                 }}
                 to={"/"}
                 className="nav-link"
