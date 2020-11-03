@@ -66,7 +66,7 @@ export default class Journal extends Component {
   }
 
   getMark(record) {
-    return record == null ? <span>-</span> : <span>+</span>;
+    return <span>${record == null ? "-" : "+"}</span>;
   }
 
   fillHabitJournal(item, daysCount) {
