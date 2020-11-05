@@ -1,11 +1,10 @@
 import http from "../http-common";
-import { getCookie } from "../Utils";
 
 class HabitDataService {
   
   getAuthHeader() {
     return {
-      headers: { Authorization: "Bearer " + getCookie("token") },
+      headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     };
   }
 
