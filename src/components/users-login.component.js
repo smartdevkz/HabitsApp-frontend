@@ -45,22 +45,15 @@ function UserLogin(props) {
           dispatch({ type: "LOGIN_REQUEST" });
           UserService.login({ email: email, password: password })
             .then((res) => {
-              localStorage.setItem("token", res.data.data);
               console.log(res.data.data);
-              UserService.getCurrentUser()
-                .then((res2) => {
-                  localStorage.setItem('currentUser',JSON.stringify(res2.data.data));
-                  console.log(res2.data.data);
-                  dispatch({
-                    type: "LOGIN_SUCCESS",
-                    payload: { token: res.data.data, user: res2.data.data },
-                  });
-                  props.history.push('/');
-                })
-                .catch((err2) => {
-                  console.log(err2);
-                  dispatch({ type: "LOGIN_ERROR" });
-                });
+              const { token, user } = res.data.data;
+              localStorage.setItem("token", token);
+              localStorage.setItem('currentUser',JSON.stringify(user));
+              dispatch({
+                type: "LOGIN_SUCCESS",
+                payload: { token: token, user: user },
+              });
+              props.history.push("/");
             })
             .catch((err) => {
               console.log(err);

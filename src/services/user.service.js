@@ -43,7 +43,7 @@ class UserDataService {
   }
 
   login(user) {
-    return http.post("generateToken", JSON.stringify(user));
+    return http.post("auth", JSON.stringify(user));
   }
 
   getCurrentUser() {
