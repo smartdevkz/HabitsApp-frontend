@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import JournalDataService from "../services/journal.service";
-import { JournalCell } from "../components/journal-cell.component";
+import JournalDataService from "../../services/journal.service";
+import { JournalCell } from "./components/journal-cell.component";
 
 export default class Journal extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ export default class Journal extends Component {
                       return (
                         <td>
                           <JournalCell
-                            day={j+1}
+                            day={j + 1}
                             data={record}
                             habitId={item.id}
                           />

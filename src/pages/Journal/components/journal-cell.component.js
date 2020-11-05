@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import JournalDataService from "../services/journal.service";
+import JournalDataService from "../../../services/journal.service";
 
 export function JournalCell(props) {
   const [mark, setMark] = useState();

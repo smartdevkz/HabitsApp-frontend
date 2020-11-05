@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import HabitDataService from "../services/habit.service";
+import HabitDataService from "../../services/habit.service";
 
 export default function HabitsList() {
 

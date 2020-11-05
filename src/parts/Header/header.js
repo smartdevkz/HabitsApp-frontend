@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuthState, useAuthDispatch } from "../context";
+import { useAuthState, useAuthDispatch } from "../../context";
 
 export const Header = () => {
   const { user } = useAuthState();

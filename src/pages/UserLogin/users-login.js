@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuthDispatch, useAuthState } from "../context";
-import UserService from "../services/user.service";
+import { useAuthDispatch, useAuthState } from "../../context";
+import UserService from "../../services/user.service";
 
 function UserLogin(props) {
   const [email, setEmail] = useState("demo");
