@@ -2,7 +2,12 @@ import React, { useState, useEffect } from "react";
 import JournalDataService from "../services/journal.service";
 
 export function JournalCell(props) {
-  const [mark, setMark] = useState(props.data ? "+" : "-");
+  const [mark, setMark] = useState();
+  const [data, setData] = useState(props.data);
+
+  useEffect(() => {
+    setMark(data ? "+" : "-");
+  }, [data]);
 
   return (
     <div
@@ -17,10 +22,9 @@ export function JournalCell(props) {
     const day = props.day;
     if (mark == "-") {
       const habitId = props.habitId;
-      addMark(habitId, day + 1, () => setMark("+"));
+      addMark(habitId, day, (newMark) => setData(newMark));
     } else if (mark == "+") {
-      const id = props.data.id;
-      removeMark(id, () => setMark("-"));
+      if (data.id) removeMark(data.id, () => setData(null));
     }
   }
 
@@ -43,8 +47,7 @@ export function JournalCell(props) {
 
     JournalDataService.save(journal)
       .then((res) => {
-        console.log(res.data.data);
-        cb();
+        cb(res.data.data);
       })
       .catch((e) => {
         console.log(e);
@@ -52,9 +55,9 @@ export function JournalCell(props) {
   }
 
   function removeMark(id, cb) {
+    console.log(id);
     JournalDataService.delete(id)
       .then((res) => {
-        console.log(res.data.data);
         cb();
       })
       .catch((e) => {

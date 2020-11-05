@@ -44,7 +44,7 @@ export default class Journal extends Component {
                       return (
                         <td>
                           <JournalCell
-                            day={j}
+                            day={j+1}
                             data={record}
                             habitId={item.id}
                           />
