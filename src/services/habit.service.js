@@ -1,15 +1,17 @@
 import http from "../http-common";
 
 class HabitDataService {
-  
   getAuthHeader() {
     return {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     };
   }
 
-  getAll() {
-    return http.get("habit", this.getAuthHeader());
+  getAll(params) {
+    const queryString = Object.keys(params)
+      .map((key) => `${key}=${params[key]}`)
+      .join("&");
+    return http.get("habit/?" + queryString, this.getAuthHeader());
   }
 
   create(habit) {

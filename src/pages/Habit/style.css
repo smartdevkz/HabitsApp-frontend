@@ -1,0 +1,13 @@
+#statuses li {
+  display: inline;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+#statuses {
+  margin-left: 0;
+}
+
+#statuses .active{
+    text-decoration: underline;
+}
