@@ -1,7 +1,6 @@
 import http from "../http-common";
 
 class JournalDataService {
-  
   getAuthHeader() {
     return {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
@@ -19,8 +18,12 @@ class JournalDataService {
     return http.post("journal/", JSON.stringify(journal), this.getAuthHeader());
   }
 
-  delete(id){
-    return http.delete("journal/"+id, this.getAuthHeader());
+  delete(id) {
+    return http.delete("journal/" + id, this.getAuthHeader());
+  }
+
+  getYears() {
+    return http.get("journal/years", this.getAuthHeader());
   }
 }
 

@@ -1,27 +1,32 @@
 import React, { Component } from "react";
 import JournalDataService from "../../services/journal.service";
-import { JournalCell } from "./components/journal-cell.component";
+import { JournalCell, YearList, MonthList } from "./components/";
 
 export default class Journal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      habits: [],
+      habits: null,
+      selectedMonth: null,
+      selectedYear: null,
     };
-  }
-
-  componentDidMount() {
-    this.loadHabits();
   }
 
   render() {
     const habits = this.state.habits;
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
-    var daysCount = new Date(year, month, 0).getDate();
+
+    if (!habits) return this.calendar();
+    
+    var daysCount = new Date(
+      this.state.selectedYear,
+      this.state.selectedMonth,
+      0
+    ).getDate();
 
     return (
       <div>
+        {this.calendar()}
+        <br />
         <table border="1">
           <thead>
             <tr>
@@ -45,6 +50,8 @@ export default class Journal extends Component {
                         <td>
                           <JournalCell
                             day={j + 1}
+                            month={this.state.selectedMonth}
+                            year={this.state.selectedYear}
                             data={record}
                             habitId={item.id}
                           />
@@ -86,16 +93,46 @@ export default class Journal extends Component {
   }
 
   loadHabits() {
-    const year = new Date().getFullYear();
-    const month = new Date().getMonth() + 1;
-
+    const year = this.state.selectedYear;
+    const month = this.state.selectedMonth;
+    
+    if (!year || !month) return;
+    
     JournalDataService.getAll(year, month)
       .then((res) => {
         console.log(res.data.data);
-        this.setState({ habits: res.data.data });
+        this.setState({ habits: [...res.data.data] });
       })
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  setMonth(month) {
+    this.setState({ selectedMonth: month, habits: [] }, () =>{
+      this.loadHabits();
+    }
+    );
+  }
+
+  setYear(year) {
+    this.setState({ selectedYear: year, habits: []}, () => {
+      this.loadHabits();
+    });
+  }
+
+  calendar() {
+    return (
+      <table>
+        <tr>
+          <td>
+            <YearList onChange={this.setYear.bind(this)} />
+          </td>
+          <td>
+            <MonthList onChange={this.setMonth.bind(this)} />
+          </td>
+        </tr>
+      </table>
+    );
   }
 }

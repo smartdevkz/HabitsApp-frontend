@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import JournalDataService from "../../../services/journal.service";
 
-export function JournalCell(props) {
+export default function JournalCell(props) {
   const [mark, setMark] = useState();
   const [data, setData] = useState(props.data);
 
@@ -36,10 +36,10 @@ export function JournalCell(props) {
   }
 
   function addMark(habitId, day, cb) {
-    const dt = new Date();
-    const year = dt.getFullYear();
-    const month = dt.getMonth();
-
+    
+    const year = props.year;
+    const month = props.month-1;
+    
     var journal = {
       habit_id: habitId,
       date: new Date(year, month, ++day),
@@ -50,12 +50,12 @@ export function JournalCell(props) {
         cb(res.data.data);
       })
       .catch((e) => {
+        alert(e); 
         console.log(e);
       });
   }
 
   function removeMark(id, cb) {
-    console.log(id);
     JournalDataService.delete(id)
       .then((res) => {
         cb();
